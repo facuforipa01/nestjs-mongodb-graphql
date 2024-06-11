@@ -1,12 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TasksModule } from './tasks/tasks.module';
+import { Task } from './tasks/task.entity';
 
+//modulo principal de la app (decorador)
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    //configuracion de typeOrm 
+    TypeOrmModule.forRoot({
+      //tipo de db
+      type: 'sqlite', 
+      //nombre
+      database: 'tasks.db',
+      //entidades que contiene
+      entities: [Task],
+      //auto sincronizar
+      synchronize: true,
+    }),
+    TasksModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
-
-//aca vamos a tener la logica de las rutas de los distintos modulos
